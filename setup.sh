@@ -22,6 +22,7 @@ git clone https://github.com/EmotionsF/ECUT-Autologin_Openwrt.git
 mv ECUT-Autologin_Openwrt ECUTS
 mv ECUTS /opt
 
+
 # 创建并配置 configs.yaml
 CONFIG_FILE="/opt/ECUTS/configs.yaml"
 
@@ -32,23 +33,19 @@ if [ ! -f "$CONFIG_FILE" ]; then
     read -s PASSWORD  # -s 选项隐藏输入
 
     # 提示选择运营商
-    echo "请选择运营商："
-    echo "1) cmcc (中国移动)"
-    echo "2) telecom (中国电信)"
-    echo "3) unicom (中国联通)"
-    read -p "请输入对应的选项编号 (1/2/3): " CHOICE
-
-    case $CHOICE in
-        1) OPERATOR="cmcc";;
-        2) OPERATOR="telecom";;
-        3) OPERATOR="unicom";;
-        *) 
-            echo "无效的选择，请重新运行脚本。"
-            exit 1
-            ;;
-    esac
-
-    echo "你选择的运营商是：$OPERATOR"
+    echo "请选择运营商（移动填 cmcc、电信填 telecom、联通填 unicom）："
+    while true; do
+        read OPERATOR
+        case $OPERATOR in
+            cmcc|telecom|unicom)
+                echo "你选择的运营商是：$OPERATOR"
+                break
+                ;;
+            *)
+                echo "无效的选择，请输入 'cmcc'（移动）、'telecom'（电信）或 'unicom'（联通）："
+                ;;
+        esac
+    done
 
     # 创建 configs.yaml 文件
     cat <<EOF > "$CONFIG_FILE"
@@ -72,9 +69,6 @@ EOF
 
     echo "配置已保存到 $CONFIG_FILE"
 
-else
-    echo "检测到已有配置文件，跳过创建步骤。"
-fi
 
 # 创建 OpenWrt 开机启动脚本
 echo "创建校园王自动登录并保持状态脚本..."
