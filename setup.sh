@@ -33,7 +33,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
     read -s PASSWORD  # -s 选项隐藏输入
 
     # 提示选择运营商
-    echo "请选择运营商（cmcc、telecom、unicom）（三选一，请填写完整）："
+    echo "请选择运营商（移动填cmcc、电信填telecom、联通填unicom）（三选一，请按照提示填写完整）："
     select OPERATOR in "cmcc" "telecom" "unicom"; do
         case $OPERATOR in
             cmcc|telecom|unicom)
@@ -69,26 +69,27 @@ EOF
     echo "配置已保存到 $CONFIG_FILE"
 
 # 创建 OpenWrt 开机启动脚本
-echo "创建启动脚本..."
-cat <<EOF > /etc/init.d/myscript
+echo "创建校园王自动登录并保持状态脚本..."
+cat <<EOF > /etc/init.d/keeponline
 #!/bin/sh /etc/rc.common
 START=99
 
 start() {
     echo "启动 screen 并运行 Python 脚本..."
-    screen -dmS myscript /usr/bin/python3 /opt/ECUTS/main.py
+    screen -dmS keeponline /usr/bin/python3 /opt/ECUTS/main.py
 }
 EOF
 
 # 赋予执行权限
-chmod +x /etc/init.d/myscript
+chmod +x /etc/init.d/keeponline
 
 # 设置开机自启
 echo "设置开机自启..."
-/etc/init.d/myscript enable
+/etc/init.d/keeponline enable
 
 # 立即运行脚本
 echo "立即运行脚本..."
-/etc/init.d/myscript start
+/etc/init.d/keeponline start
 
 echo "所有步骤完成！"
+echo "现在可以打开百度试试了！"
