@@ -69,6 +69,11 @@ EOF
 
     echo "配置已保存到 $CONFIG_FILE"
 
+else
+
+    echo "检测到已有配置文件，跳过创建步骤。"
+
+fi
 
 # 创建 OpenWrt 开机启动脚本
 echo "创建校园王自动登录并保持状态脚本..."
