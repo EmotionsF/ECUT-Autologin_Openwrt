@@ -28,41 +28,47 @@ CONFIG_FILE="/opt/ECUTS/configs.yaml"
 
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "请输入校园网账号（自己的学号）:"
-    read $USERNAME < /dev/tty
+    read USERNAME < /dev/tty
     echo "请输入校园网密码（输入时看不到密码，属于正常现象）:"
-    read -s $PASSWORD < /dev/tty  # -s 选项隐藏输入
+    read -s PASSWORD < /dev/tty  # -s 选项隐藏输入
 
     # 提示选择运营商
     echo "请选择运营商（移动填 cmcc、电信填 telecom、联通填 unicom）："
     while true; do
-        read $OPERATOR < /dev/tty
-        if [ "$OPERATOR" = "cmcc" ] || [ "$OPERATOR" = "telecom" ] || [ "$OPERATOR" = "unicom" ]; then
-            echo "你选择的运营商是：$OPERATOR"
-            break
-        else
-            echo "无效的选择，请输入 'cmcc'（移动）、'telecom'（电信）或 'unicom'（联通）："
-        fi
+        read OPERATOR < /dev/tty
+        case $OPERATOR in
+            cmcc|telecom|unicom)
+                echo "你选择的运营商是：$OPERATOR"
+                break
+                ;;
+            *)
+                echo "无效的选择，请输入 'cmcc'（移动）、'telecom'（电信）或 'unicom'（联通）："
+                ;;
+        esac
     done
 
     # 创建 configs.yaml 文件
-    echo "# 账号" > "$CONFIG_FILE"
-    echo "user_account: \"$USERNAME\"" >> "$CONFIG_FILE"
-    echo "# 运营商自己选择" >> "$CONFIG_FILE"
-    echo "operator: \"$OPERATOR\"" >> "$CONFIG_FILE"
-    echo "# 密码" >> "$CONFIG_FILE"
-    echo "user_password: \"$PASSWORD\"" >> "$CONFIG_FILE"
-    echo "" >> "$CONFIG_FILE"
-    echo "# 填写示例" >> "$CONFIG_FILE"
-    echo "# 账号" >> "$CONFIG_FILE"
-    echo "# user_account: \"2020123456\"" >> "$CONFIG_FILE"
-    echo "# 运营商自己选择" >> "$CONFIG_FILE"
-    echo "# operator: 'cmcc'" >> "$CONFIG_FILE"
-    echo "# 密码" >> "$CONFIG_FILE"
-    echo "# user_password: \"1234abcdef\"" >> "$CONFIG_FILE"
-    echo "" >> "$CONFIG_FILE"
-    echo "# 注意，运营商需要从 'cmcc'（移动）、'telecom'（电信）、'unicom'（联通）中选择，其它选项均无效" >> "$CONFIG_FILE"
+    cat <<EOF > "$CONFIG_FILE"
+# 账号
+user_account: "$USERNAME"
+# 运营商自己选择
+operator: "$OPERATOR"
+# 密码
+user_password: "$PASSWORD"
+
+# 填写示例
+# 账号
+# user_account: "2020123456"
+# 运营商自己选择
+# operator: 'cmcc'
+# 密码
+# user_password: "1234abcdef"
+
+# 注意，运营商需要从 'cmcc'（移动）、'telecom'（电信）、'unicom'（联通）中选择，其它选项均无效
+EOF
 
     echo "配置已保存到 $CONFIG_FILE"
+
 else
     echo "检测到已有配置文件，跳过创建步骤。"
 fi
