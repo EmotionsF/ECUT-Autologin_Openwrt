@@ -28,14 +28,14 @@ CONFIG_FILE="/opt/ECUTS/configs.yaml"
 
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "请输入校园网账号（自己的学号）:"
-    read -p USERNAME < /dev/tty
+    read -p $USERNAME < /dev/tty
     echo "请输入校园网密码（输入时看不到密码，属于正常现象）:"
-    read -s -p PASSWORD < /dev/tty  # -s 选项隐藏输入
+    read -s -p $PASSWORD < /dev/tty  # -s 选项隐藏输入
 
     # 提示选择运营商
     echo "请选择运营商（移动填 cmcc、电信填 telecom、联通填 unicom）："
     while true; do
-        read -p OPERATOR < /dev/tty
+        read -p $OPERATOR < /dev/tty
         if [ "$OPERATOR" = "cmcc" ] || [ "$OPERATOR" = "telecom" ] || [ "$OPERATOR" = "unicom" ]; then
             echo "你选择的运营商是：$OPERATOR"
             break
