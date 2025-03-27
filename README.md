@@ -70,10 +70,12 @@ chmod +x /etc/init.d/keeponline
 可以使用以下命令打开screen查看脚本运行状态：
 
 ```bash
+
 # 查看运行状态
 screen -r keeponline
 
-# 退出方法：先按Ctrl+A，然后按D
+# 退出screen方法：先按Ctrl+A，然后按D
+# 关闭脚本方法：按Ctrl+C，一般同时关闭脚本和它所属的keeponline会话；若会话未关闭，请输入exit回车。
 
 ```
 
