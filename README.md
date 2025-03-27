@@ -49,7 +49,7 @@ user_password: "1234abcdef" # 改成你的校园网密码
 # 启动screen让脚本后台运行
 screen -dmS keeponline /usr/bin/python3 /opt/ECUTS/main.py
 
-# 设置软路由开机自启
+# 创建开机自启脚本
 cat <<EOF > /etc/init.d/keeponline
 #!/bin/sh /etc/rc.common
 START=99
@@ -60,8 +60,21 @@ start() {
 }
 EOF
 
+# 设置开机自启
 chmod +x /etc/init.d/keeponline
 /etc/init.d/keeponline enable
 
 ```
+
+相比常规版本，此版本取消了自选菜单，保证脚本全自动运行。
+可以使用以下命令打开screen查看脚本运行状态：
+
+```bash
+# 查看运行状态
+screen -r keeponline
+
+# 退出方法：先按Ctrl+A，然后按D
+
+```
+
 
